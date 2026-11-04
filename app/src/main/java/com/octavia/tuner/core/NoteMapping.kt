@@ -99,6 +99,6 @@ fun readingFromMidi(fractionalMidi: Double, reference: Double, targets: List<Int
 
     fun reading(frequency: Double, reference: Double = 440.0, targets: List<Int>? = null): TunerReading? {
         if (frequency <= 0 || reference <= 0) return null
-        return reading(fractionalMidi(frequency, reference), reference, targets)
+       return readingFromMidi(fractionalMidi(frequency, reference), reference, targets)
     }
 }
