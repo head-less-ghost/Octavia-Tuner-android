@@ -73,8 +73,7 @@ object NoteMapper {
         }
         return "${names[index]}$octave"
     }
-
-    fun reading(fractionalMidi: Double, reference: Double, targets: List<Int>? = null): TunerReading {
+fun readingFromMidi(fractionalMidi: Double, reference: Double, targets: List<Int>? = null): TunerReading {
         val nearest = targets?.minByOrNull { abs(it - fractionalMidi) }
         val targetMidi = if (nearest != null && abs(nearest - fractionalMidi) <= STRING_CAPTURE_SEMITONES) {
             nearest
