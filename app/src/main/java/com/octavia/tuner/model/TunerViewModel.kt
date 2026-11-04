@@ -147,7 +147,7 @@ class TunerViewModel(app: Application) : AndroidViewModel(app) {
             isHolding = false
             val midi = NoteMapper.fractionalMidi(pitch.frequency, referencePitch)
             val smoothed = smoother.add(midi)
-            reading = NoteMapper.reading(smoothed, referencePitch, preset.strings)
+           reading = NoteMapper.readingFromMidi(smoothed, referencePitch, preset.strings)
         } else if (reading != null) {
             if (now - lastHeard > holdDuration) {
                 reading = null; isHolding = false; smoother.reset()
