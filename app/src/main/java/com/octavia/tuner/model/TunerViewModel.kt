@@ -73,27 +73,27 @@ class TunerViewModel(app: Application) : AndroidViewModel(app) {
 
     // ---- Settings -------------------------------------------------------------------------
 
-    fun setReferencePitch(v: Double) {
+    fun updateReferencePitch(v: Double) {
         if (v == referencePitch) return
         referencePitch = v
         prefs.edit().putFloat(K_REF, v.toFloat()).apply()
         smoother.reset() // smoothed value lives in the old reference's MIDI space
     }
 
-    fun setPreset(p: TuningPreset) {
+    fun updatePreset(p: TuningPreset) {
         prefs.edit().putString(K_PRESET, p.id).apply()
         if (p == preset) return
         preset = p
         reading = null; isHolding = false; smoother.reset()
     }
 
-    fun setNoteNaming(v: NoteNaming) { noteNaming = v; prefs.edit().putString(K_NAMING, v.key).apply() }
-    fun setAccidentalStyle(v: AccidentalStyle) { accidentalStyle = v; prefs.edit().putString(K_ACC, v.key).apply() }
-    fun setTranspose(v: Int) {
+    fun updateNoteNaming(v: NoteNaming) { noteNaming = v; prefs.edit().putString(K_NAMING, v.key).apply() }
+    fun updateAccidentalStyle(v: AccidentalStyle) { accidentalStyle = v; prefs.edit().putString(K_ACC, v.key).apply() }
+    fun updateTranspose(v: Int) {
         transposeSemitones = v.coerceIn(-12, 12)
         prefs.edit().putInt(K_TRANSPOSE, transposeSemitones).apply()
     }
-    fun setGate(v: Double) {
+    fun updateGate(v: Double) {
         gateDB = v
         engine.gateDB = v.toFloat()
         prefs.edit().putFloat(K_GATE, v.toFloat()).apply()
