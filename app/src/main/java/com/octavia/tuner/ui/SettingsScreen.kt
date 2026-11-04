@@ -84,7 +84,7 @@ private fun TuningCard(vm: TunerViewModel) {
                         .clip(RoundedCornerShape(11.dp))
                         .background(if (selected) accent.copy(alpha = 0.14f) else faint(0.035f))
                         .border(1.2.dp, if (selected) accent.copy(alpha = 0.55f) else Color.Transparent, RoundedCornerShape(11.dp))
-                        .clickable { vm.setPreset(preset) }
+                        .clickable { vm.updatePreset(preset) }
                         .padding(horizontal = 12.dp, vertical = 9.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -109,22 +109,22 @@ private fun PitchCard(vm: TunerViewModel) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Reference pitch", fontSize = 14.sp, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
             Text(String.format(Locale.US, "A4 = %.1f Hz", vm.referencePitch), fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-            TextButton({ vm.setReferencePitch(440.0) }, enabled = vm.referencePitch != 440.0) { Text("Reset") }
+            TextButton({ vm.updateReferencePitch(440.0) }, enabled = vm.referencePitch != 440.0) { Text("Reset") }
         }
         Slider(
             value = vm.referencePitch.toFloat(),
-            onValueChange = { vm.setReferencePitch(it.toDouble()) },
+            onValueChange = { vm.updateReferencePitch(it.toDouble()) },
             valueRange = 415f..466f, steps = 101,
         )
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Transposition", fontSize = 14.sp, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
-            TextButton({ vm.setTranspose(vm.transposeSemitones - 1) }, enabled = vm.transposeSemitones > -12) { Text("−", fontSize = 20.sp) }
+            TextButton({ vm.updateTranspose(vm.transposeSemitones - 1) }, enabled = vm.transposeSemitones > -12) { Text("−", fontSize = 20.sp) }
             Text(
                 if (vm.transposeSemitones == 0) "0" else String.format(Locale.US, "%+d", vm.transposeSemitones),
                 fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
             )
-            TextButton({ vm.setTranspose(vm.transposeSemitones + 1) }, enabled = vm.transposeSemitones < 12) { Text("+", fontSize = 20.sp) }
+            TextButton({ vm.updateTranspose(vm.transposeSemitones + 1) }, enabled = vm.transposeSemitones < 12) { Text("+", fontSize = 20.sp) }
         }
         Text(
             if (vm.transposeSemitones == 0) "Concert pitch — notes are shown as they sound."
@@ -138,9 +138,9 @@ private fun PitchCard(vm: TunerViewModel) {
 private fun DisplayCard(vm: TunerViewModel) {
     SettingsCard("Display", "Aa", Color(0xFFAF52DE)) {
         Text("Note names", fontSize = 14.sp, fontWeight = FontWeight.Medium)
-        SegmentedChoice(NoteNaming.values().map { it to it.title }, vm.noteNaming, { vm.setNoteNaming(it) })
+        SegmentedChoice(NoteNaming.values().map { it to it.title }, vm.noteNaming, { vm.updateNoteNaming(it) })
         Text("Accidentals", fontSize = 14.sp, fontWeight = FontWeight.Medium)
-        SegmentedChoice(AccidentalStyle.values().map { it to it.title }, vm.accidentalStyle, { vm.setAccidentalStyle(it) })
+        SegmentedChoice(AccidentalStyle.values().map { it to it.title }, vm.accidentalStyle, { vm.updateAccidentalStyle(it) })
     }
 }
 
@@ -151,7 +151,7 @@ private fun InputCard(vm: TunerViewModel) {
             Text("Noise gate", fontSize = 14.sp, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
             Text("${vm.gateDB.toInt()} dB", fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = faint(0.6f))
         }
-        Slider(vm.gateDB.toFloat(), { vm.setGate(it.toDouble()) }, valueRange = -75f..-25f)
+        Slider(vm.gateDB.toFloat(), { vm.updateGate(it.toDouble()) }, valueRange = -75f..-25f)
         LevelMeter(vm.level, gateDB = vm.gateDB)
         Text(
             "Sounds quieter than the marker are ignored. Raise it if background noise triggers false notes; lower it for quiet instruments.",
